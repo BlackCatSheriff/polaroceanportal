@@ -1,0 +1,129 @@
+{% extends "headfoot.html" %}
+{% import "quicklinkslist.html" as quicklinkstemplate %}
+{% block title %}
+-{{ article.title }}
+{% endblock %}
+
+{% block css %}
+<style>
+	.page-header
+	{
+		padding-bottom:0px;
+		margin-bottom:7px;
+		border-bottom:1px solid #ccc;
+	}
+	#article-content p
+	{
+		line-height:24px
+	}
+</style>
+{% endblock %}
+
+{% block js %}
+
+<script>
+	$(function(){
+		$("#backtotop").click(function(){
+			$("html,body").animate({scrollTop:0},400)
+		});
+		winwidth=$(window).innerWidth();
+		if (winwidth<979)
+		{
+			$("#article-content img").addClass("img-responsive")
+		}
+		$(window).resize(function(){
+			winwidth=$(window).innerWidth();
+			if (winwidth<979)
+			{
+				$("#article-content img").addClass("img-responsive")
+			}
+			else
+			{
+				$("#article-content img").removeClass("img-responsive")
+			}
+		});
+	});
+	$("p").find("img").each(function(){
+	if($(this).width()>$(this).parent("p").width()){
+		$(this).css({"width":"100%","height":"auto"})
+	}
+});
+</script>
+{% if article.abstract!=None and article.abstract|trim != "" %}
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"{{article.abstract}}","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+{% else %}
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"{{article.title}}","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+{% endif %}
+
+
+{% endblock %}
+
+{% block content %}
+	<div class="well hidden-xs hidden-sm" style="border-radius: 0px;padding-left:36px;padding-top:0px;padding-bottom:0px">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<p style="padding-top:5px;padding-bottom:5px;margin:0px"><a href="/">Index</a>><a href="/board/{{ article.forum.id }}">{{ article.forum.name }}</a>>Text</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+	<div class="container" id="testpincontainer">
+		<div class="row">
+			<div class="col-md-8 contentsection">
+				<div class="page-header" style="margin-top:50px;padding-bottom:5px">
+					<h2>{{ article.title }}</h2>
+					<br>
+					<div class="row visible-md visible-lg">
+						<div class="col-md-8">
+							<p style="color:#777;margin-bottom:0px">
+								<small>{{ article.time }}</small><br>
+								<small>Source：{{ article.source }}</small>
+							</p>
+						</div>
+						<div class="col-md-4">
+							<div class="bdsharebuttonbox" style="padding-left:16px;padding-top:5px">
+								<a href="#" class="bds_more" data-cmd="more"></a>
+								<a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a>
+								<a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a>
+								<a title="分享到Facebook" href="#" class="bds_fbook" data-cmd="fbook"></a>
+								<a title="分享到Twitter" href="#" class="bds_twi" data-cmd="twi"></a>
+								<a title="分享到linkedin" href="#" class="bds_linkedin" data-cmd="linkedin"></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div style="padding-top:10px;" id="article-content">
+					{{ article.content | safe }}
+				</div>
+			</div>
+			<div class="col-md-4 hidden-xs hidden-sm">
+				<div style="margin-top:45px;margin-left:30px;">
+					<div id="quicklinks">
+						{{ quicklinkstemplate.render_quicklinks(recommended) }}
+						{{ quicklinkstemplate.render_quicklinks(lastest) }}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 hidden-md hidden-lg">
+				<p style="text-align:right;color:#777"><small>{{article.time}} Source：{{article.source}}</small></p>
+			</div>
+			<div class="col-md-8">
+				<div style="padding-top:60px">
+				<div aria-label="Justified button group" role="group" class="btn-group btn-group-justified btn-group-sm">
+					<a role="button" class="btn btn-default" href="/article/{{ article.id-1 }}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>Previous</a>
+					<a id="backtotop" role="button" class="btn btn-default"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true">Back To Top</a>
+					<a role="button" class="btn btn-default" href="/article/{{ article.id+1 }}">Next<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></a>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<br>
+{% endblock %}

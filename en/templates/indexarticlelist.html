@@ -1,0 +1,42 @@
+{% macro render_articlelist(board) %}
+	<div class="page-header"><p style="font-size:16px;margin-bottom:0px;font-weight:bold"><a class="catagorylink" href="/board/{{ board.id }}">{{ board.name }}</a></p></div>
+	<ul class="list-unstyled">
+		{% if board.articles!=None %}
+		{% for article_id,article in board.articles.iteritems() %}
+			{% if loop.index<7 %}
+				<li style="padding:3px 0px 3px 15px;background-image:url('/images/libackground.png');background-repeat:no-repeat;background-position:left 7px;"><a href="/article/{{ article.id }}">{{ article.title }}</a></li>
+			{% endif %}
+		{% endfor %}
+		{% endif %}
+	</ul>
+{% endmacro %}
+
+{% macro render_polarnews(board) %}
+<h5 style="padding-left:15px"><a class="catagorylink" href="/board/{{ board.id }}">{{ board.name }}</a></h5>
+<ul class="list-unstyled">
+	{% if board.articles!=None %}
+	{% for article_id,article in board.articles %}
+		{% if loop.index<9 %}
+			<li style="padding:3px 0px 3px 15px;background-image:url('images/libackground.png');background-repeat:no-repeat;background-position:left 7px;"><a href="/article/{{ article.id }}" style="font-size:16px;">{{ article.title }}</a></strong>
+	</li>
+		{% endif %}
+	{% endfor %}
+	{% endif %}
+</ul>
+{% endmacro %}
+
+{% macro render_infoorcomment(board) %}
+<h5><a class="catagorylink" href="/board/{{ board.id }}">{{ board.name }}</a></h5>
+{% if board.articles!=None %}
+{% for article_id,article in board.articles.iteritems() %}
+	{% if loop.index<3 %}
+		<div class="news" style="border-bottom:1px dotted #dddddd;">
+			<h5 style="padding-top:5px;font-size:13px;"><a href="/article/{{ article.id }}">{{ article.title }}</a></h5>
+			<p style="font-size:12px;color:#838383">
+			{{ article.abstract }}
+			</p>
+		</div>
+	{% endif %}
+{% endfor %}
+{% endif %}
+{% endmacro %}

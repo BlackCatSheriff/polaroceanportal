@@ -1,0 +1,64 @@
+{% extends "admin_headfoot.html" %}
+{% block title %}
+目录管理
+{% endblock %}
+{% block navigation %}
+{{ render_navigation("file") }}
+{% endblock %}
+
+{% block content %}
+	<div class="ui vertical segment">
+		<a class="ui tiny button" href="/admin/file/image">
+			<i class="disk outline icon"></i>图片
+		</a>
+		<a class="ui tiny button" href="/admin/file/file">
+			<i class="disk outline icon"></i>其他文件
+		</a>
+	</div>
+	
+	<div class="ui vertical segment">
+		<div class="ui breadcrumb">
+			<div class="active section"><i class="disk outline icon"></i>{{ bucket.chinese_name }}</div>
+		</div>
+	</div>
+	
+	<div class="ui vertical segment">
+	
+		<form class="ui form" action="/admin/file/{{ bucket.name }}/create" method="POST">
+	
+	
+			<table class="ui blue striped celled table">
+				<thead>
+					<tr>
+						<th class="thirteen wide">文件夹名称</th>
+						<th class="three wide">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for directory_name,directory in bucket.directorys.iteritems() %}
+					<tr>
+						<td><a href="/admin/file/{{ bucket.name }}/{{ directory.name }}"><i class="folder icon"></i>{{ directory.name }}</a></td>
+						<td>
+							<div class="ui tiny buttons">
+								<a href="/admin/file/{{ bucket.name }}/delete/{{ directory.name }}" class="ui button">删除</a>
+							</div>
+						</td>
+					</tr>
+					{% else %}
+					<tr>
+						<td class="center aligned" colspan="2">没有目录</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+	
+			<div class="ui divider"></div>
+	
+			<div class="ui action input">
+				<input name="dir_name" placeholder="目录名" type="text">
+				<input type="submit" value="创建" class="ui button">
+			</div>
+	
+		</form>
+	</div>
+{% endblock %}

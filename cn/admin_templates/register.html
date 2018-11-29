@@ -1,0 +1,284 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="renderer" content="webkit">
+<meta name="author" content="Roy Mcmurphy;" />
+<title>注册</title>
+<link href="/favicon.ico" type="image/x-icon" rel="shortcut icon">
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+	.body-container {
+		width: 80%;
+		margin: 0 auto;
+	}
+	.btn {
+		display: table;
+		margin: 0 auto;
+	}
+	.form-horizontal {
+		margin-top: 50px;
+	}
+	.help-block {
+		height: 20px;
+	}
+	@media screen and (max-width: 900px) {
+		.body-container {
+			width: 85%;
+		}
+	}
+	@media screen and (max-width: 600px) {
+		.body-container {
+			width: 100%;
+		}
+	}
+  @media screen and (min-width: 768px) {
+    .col-sm-10 {
+      width: 72%;
+    }
+  }
+</style>
+<body>
+<div class="container visible-md visible-lg">
+		<div class="row">
+			<div class="col-md-7">
+				<a href="/">
+					<img src="/images/logo.jpg" title="首页" alt="test image">
+				</a>
+			</div>
+			<div class="col-md-3">
+<div style="position:relative;top:45px;">
+</div>
+			</div>
+			<div class="col-md-2">
+				<div style="position:relative;top:55px;text-align:right;z-index:9999;">
+					<div class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> LANGUAGE<span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+							<li role="presentation"><a role="menuitem" title="Language: English" tabindex="-1" href="http://en.polaroceanportal.com">ENGLISH</a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="http://www.polaroceanportal.com">简体中文</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<div class="body-container">
+<form class="form-horizontal" role="form" method="POST" action="/admin/register/">
+  	<div class="form-group">
+    	<label for="name" class="col-sm-2 control-label">姓名</label>
+    	<div class="col-sm-10">
+      		<input type="text" class="form-control" name="name" id="name" placeholder="请输入姓名">
+      		<span class="help-block" id="nameHelp"></span>
+    	</div>
+  	</div>
+  	<div class="form-group">
+    	<label for="unit" class="col-sm-2 control-label">单位</label>
+    	<div class="col-sm-10">
+     		<input type="text" class="form-control" name="workplace" id="unit" placeholder="请输入单位">
+     		<span class="help-block" id="unitHelp"></span>
+    	</div>
+ 	</div>
+ 	<div class="form-group">
+    	<label for="email" class="col-sm-2 control-label">邮箱</label>
+    	<div class="col-sm-10">
+     		<input type="text" class="form-control" name="email" id="email" placeholder="请输入邮箱">
+     		<span class="help-block" id="emailHelp"></span>
+    	</div>
+ 	</div>
+    <div class="form-group">
+    	<label for="password" class="col-sm-2 control-label">用户名</label>
+    	<div class="col-sm-10">
+     		<input type="text" class="form-control" name="usn" id="username" placeholder="请输入用户名">
+     		<span class="help-block" id="usernameHelp"></span>
+    	</div>
+ 	</div>
+ 	<div class="form-group">
+    	<label for="password" class="col-sm-2 control-label">密码</label>
+    	<div class="col-sm-10">
+     		<input type="password" class="form-control" name="pwd" id="password" placeholder="请输入密码">
+     		<span class="help-block" id="passwordHelp"></span>
+    	</div>
+ 	</div>
+ 	<div class="form-group">
+    	<label for="R_password" class="col-sm-2 control-label">再次确认密码</label>
+    	<div class="col-sm-10">
+     		<input type="password" class="form-control" name="rpwd" id="R_password" placeholder="请再次输入密码">
+     		<span class="help-block" id="passwordRHelp"></span>
+    	</div>
+ 	</div>
+	<button type="submit" class="btn btn-default" onclick="check()">注册</button>
+</form>
+</div>
+
+
+   <footer>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="page-header" style="border-bottom:2px solid #999"></div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-1">
+				<p><img class="img-responsive" src="/images/logoonly.jpg" alt="logo"></p>
+			</div>
+			<div class="col-md-11 visible-md visible-lg">
+<p style="text-align:right">
+					{% if footer.items!=None %}
+						{% for item_id,item in footer.items.iteritems() %}
+							<a style="text-align:right" href="{{ item.link }}">{{ item.name }}|</a>
+                        {% endfor %}
+					{% else %}
+
+					{% endif %}
+</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 visible-md visible-lg">
+				<p style="text-align:center;color:#838383"><small>©2017 Polar and Ocean Portal 国际极地与海洋门户版权所有 鲁ICP备15008917号</small></p>
+			</div>
+			<div class="col-md-12 visible-xs visible-sm">
+				<p style="color:#838383"><small>©2017 Polar and Ocean Portal 国际极地与海洋门户版权所有 鲁ICP备15008917号</small></p>
+			</div>
+		</div>
+	</div>
+	</footer>
+
+</body>
+<script src="/js/jquery-1.11.2.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+
+
+function checkName(name,namehelp){  //验证name
+    if(name != ""){ //不为空则正确
+	    namehelp.innerText="输入正确";
+	    namehelp.style.color="green";
+	    return true;
+    }
+    else{ //name不符合
+	   	namehelp.innerText="输入不能为空";
+	    namehelp.style.color="red";
+	    return false;
+	}
+}
+function checkUsername(username,usernamehelp){  //验证username
+    var pattern = /^\w+$/;
+    if(username.length>5 && username.length<17 &&pattern.test(username)){ //不为空则正确
+	    usernamehelp.innerText="输入正确";
+	    usernamehelp.style.color="green";
+	    return true;
+    }
+    else{ //unit不符合
+	   	usernamehelp.innerText="输入错误，用户名6-16位仅限英文字母、数字、下划线";
+	    usernamehelp.style.color="red";
+	    return false;
+	}
+}
+function checkUnit(unit,unithelp){  //验证unit
+    if(unit != ""){ //不为空则正确
+	    unithelp.innerText="输入正确";
+	    unithelp.style.color="green";
+	    return true;
+    }
+    else{ //unit不符合
+	   	unithelp.innerText="输入不能为空";
+	    unithelp.style.color="red";
+	    return false;
+	}
+}
+function checkPassw(passw1,passw2,passwhelp){ //验证密码
+    var pattern = /^\w+$/;
+    if(passw2.length<6||passw2.length>16 || passw1 !== passw2 || !pattern.test(passw2)){ //两次密码输入不为空且不等 不符合
+    	passwhelp.innerText="输入错误，密码6-16位仅限英文字母、数字、下划线";
+    	passwhelp.style.color="red";
+    	return false;
+    }
+    else{  //密码输入正确
+    	passwhelp.innerText="输入正确";
+    	passwhelp.style.color="green";
+    return true;
+    }
+}
+function checkEmail(email,emailhelp){  //验证邮箱
+    var pattern = /^([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/; 
+    if(!pattern.test(email)){ //email格式不正确
+    	emailhelp.innerText="输入错误";
+    	emailhelp.style.color="red";
+    	return false;
+    }
+    else{ //格式正确
+    	emailhelp.innerText="输入正确";
+    	emailhelp.style.color="green";
+    	return true;
+    }
+}
+
+var ele = { //存放各个input字段obj
+    name: document.getElementById("name"),
+    namehelp: document.getElementById("nameHelp"),
+    unit: document.getElementById("unit"),
+    unithelp: document.getElementById("unitHelp"),
+    username: document.getElementById("username"),
+    usernamehelp: document.getElementById("usernameHelp"),
+    password: document.getElementById("password"),
+    passwordhelp: document.getElementById("passwordHelp"),
+    R_password: document.getElementById("R_password"),
+    R_passwordhelp: document.getElementById("passwordRHelp"),
+    email: document.getElementById("email"),
+    emailhelp: document.getElementById("emailHelp")
+  };
+  ele.name.onblur = function(){ //name失去焦点则检测
+    checkName(ele.name.value,ele.namehelp);
+  }
+  ele.unit.onblur = function(){ //unit失去焦点则检测
+    checkUnit(ele.unit.value,ele.unithelp);
+  }
+  ele.username.onblur = function(){ //username失去焦点则检测
+    checkUsername(ele.username.value,ele.usernamehelp);
+  }
+  ele.password.onblur = function(){ //password失去焦点则检测
+    checkPassw(ele.password.value,ele.R_password.value,ele.R_passwordhelp);
+  }
+  ele.R_password.onblur = function(){ //R_password失去焦点则检测
+    checkPassw(ele.password.value,ele.R_password.value,ele.R_passwordhelp);
+  }
+  ele.email.onblur = function(){ //email失去焦点则检测
+    checkEmail(ele.email.value,ele.emailhelp);
+  }
+
+function check(){  //表单提交则验证开始
+    var ok = false;
+    var nameOk = false;
+    var unitOk = false;
+    var emailOk = false;
+    var passwOk = false;
+    var usernameOk = false;
+
+    if(checkName(ele.name.value,ele.namehelp)){ nameOk = true; }  //验证name
+    if(checkUnit(ele.unit.value,ele.unithelp)){ unitOk = true; }  //验证unit
+    if(checkUsername(ele.username.value,ele.usernamehelp)){ usernameOk = true; }  //验证username
+    if(checkPassw(ele.password.value,ele.R_password.value,ele.R_passwordhelp)){ passwOk = true; } //验证password
+    if(checkEmail(ele.email.value,ele.emailhelp)){ emailOk = true; }  //验证email
+
+    if(nameOk && unitOk && passwOk && emailOk&&usernameOk){
+        alert("注册成功");  //注册成功
+      //return true; 
+    }
+    else {alert("输入不合法,创建用户失败，请检查用户名密码邮箱是否符合要求(6-16位仅限英文字母、数字、[-_])");}
+    return false;  //有误，注册失败
+  }
+
+</script>
+<script src="/js/jquery-2.1.3.min.js"></script>
+<script src="/semantic-ui/dist/semantic.min.js"></script>
+</html>

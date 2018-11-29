@@ -1,0 +1,42 @@
+{% extends "admin_headfoot.html" %}
+{% block title %}
+用户管理
+{% endblock %}
+{% block navigation %}
+{{ render_navigation("user") }}
+{% endblock %}
+
+{% block content %}
+	<div class="ui vertical segment">
+		{% if user.name=="Administrator" %}
+		<a class="ui tiny button" href="/admin/user/">
+			<i class="users icon"></i>用户管理
+		</a>
+		<a class="ui tiny primary button" href="/admin/user/changepasswd">
+			<i class="edit icon"></i>修改密码
+		</a>
+		{% else %}
+		<a class="ui tiny primary button" href="/admin/user/changepasswd">
+			<i class="edit icon"></i>修改密码
+		</a>
+		{% endif %}
+	</div>
+	
+	<div class="ui vertical segment">
+		<form method="POST" action="/admin/user/changepasswd">
+			<div class="ui small labeled input">
+				<div class="ui label">新密码：</div>
+				<input name="new_passwd" placeholder="新密码。。" type="password">
+			</div>
+			<div class="ui divider"></div>
+			<div class="ui small labeled input">
+				<div class="ui label">再次输入新密码：</div>
+				<input name="confirm" placeholder="再次输入新密码。。" type="password">
+			</div>
+			
+			<div class="ui divider"></div>
+			
+			<input class="ui button" type="submit" value="保存">
+		</form>
+	</div>
+{% endblock %}

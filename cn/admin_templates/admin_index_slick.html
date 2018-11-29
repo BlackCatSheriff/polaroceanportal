@@ -1,0 +1,78 @@
+{% extends "admin_headfoot.html" %}
+{% block title %}
+首页内容控制
+{% endblock %}
+{% block navigation %}
+{{ render_navigation("index") }}
+{% endblock %}
+{% block content %}
+	<div class="ui vertical segment">
+		<a class="ui tiny button" href="/admin/index/jumbotron">
+			<i class="browser icon"></i>巨幕
+		</a>
+		<a class="ui primary tiny button" href="/admin/index/slick">
+			<i class="server icon"></i>滚动图片
+		</a>
+		<a class="ui tiny button" href="/admin/index/aboutus">
+			<i class="copyright icon"></i>关于我们
+		</a>
+        <a class="ui tiny button" href="/admin/index/footer">
+			<i class="copyright icon"></i>合作单位
+		</a>
+	</div>
+	
+	<div class="ui vertical segment">
+		{% if slick.name=="scholars" %}
+		<a class="ui primary tiny button" href="/admin/index/slick/scholars">
+			<i class="server icon"></i>研究团队
+		</a>
+		<a class="ui tiny button" href="/admin/index/slick/professors">
+			<i class="server icon"></i>顾问学者
+		</a>
+		{% else %}
+		<a class="ui tiny button" href="/admin/index/slick/scholars">
+			<i class="server icon"></i>研究团队
+		</a>
+		<a class="ui primary tiny button" href="/admin/index/slick/professors">
+			<i class="server icon"></i>顾问学者
+		</a>
+		{% endif %}
+	</div>
+	
+	<div class="ui vertical segment">
+		<form class="ui form">
+			<table class="ui blue striped celled table">
+				<thead>
+					<tr>
+						<th class="thirteen wide">名称</th>
+						<th class="three wide">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if slick.items!=None %}
+						{% for item_id,item in slick.items.iteritems() %}
+						<tr>
+							<td><a href="{{ item.link }}">{{ item.name }}</a></td>
+							<td>
+								<div class="ui tiny buttons">
+									<a href="/admin/index/slick/{{ slick.name }}/update/{{ item_id }}" class="ui button">修改</a>
+									<a href="/admin/index/slick/{{ slick.name }}/delete/{{ item_id }}" class="ui button">删除</a>
+								</div>
+							</td>
+						</tr>
+						{% endfor %}
+					{% else %}
+						<tr>
+							<td class="center aligned" colspan="2">没有图片</td>
+						</tr>
+					{% endif %}
+				</tbody>
+			</table>
+			
+			<div class="ui divider"></div>
+			
+			<a class="ui button" href="/admin/index/slick/{{ slick.name }}/create" >添加滚动图片单元</a>
+			
+		</form>
+	</div>
+{% endblock %}

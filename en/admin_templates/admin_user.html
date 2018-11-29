@@ -1,0 +1,60 @@
+{% extends "admin_headfoot.html" %}
+{% block title %}
+用户管理
+{% endblock %}
+{% block navigation %}
+{{ render_navigation("user") }}
+{% endblock %}
+
+{% block content %}
+	<div class="ui vertical segment">
+		<a class="ui tiny primary button" href="/admin/user/">
+			<i class="users icon"></i>用户管理
+		</a>
+		<a class="ui tiny button" href="/admin/user/changepasswd">
+			<i class="edit icon"></i>修改密码
+		</a>
+	</div>
+	
+	<div class="ui vertical segment">
+		<form class="ui form" method="POST" action="">
+			<table class="ui blue striped celled table">
+				<thead>
+					<tr>
+						<th class="thirteen wide">
+							用户名
+						</th>
+						<th class="three wide">
+							操作
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if all_user!=None %}
+						{% for user_id,user in all_user.iteritems() %}
+							<tr>
+								<td>
+									{{ user.name }}
+								</td>
+								<td>
+									<div class="ui tiny buttons">
+										<a class="ui button" href="/admin/user/delete/{{ user.name }}">删除</a>
+										<a class="ui button" href="/admin/user/resetpasswd/{{ user.name }}">重置密码</a>
+									</div>
+								</td>
+							</tr>
+						{% endfor %}
+					{% else %}
+					<tr>
+						<td class="center aligned" colspan="2">没有用户</td>
+					</tr>
+					{% endif %}
+				</tbody>
+			</table>
+			
+			<div class="ui divider"></div>
+			
+			<a class="ui button" href="/admin/user/create">新建用户</a>
+		</form>
+	</div>
+{% endblock %}

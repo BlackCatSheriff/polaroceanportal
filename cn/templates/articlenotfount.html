@@ -1,0 +1,63 @@
+{% extends "headfoot.html" %}
+{% import "quicklinkslist.html" as quicklinkstemplate %}
+{% block title %}
+-文章不存在
+{% endblock %}
+
+{% block css %}
+<style>
+	.page-header
+	{
+		padding-bottom:0px;
+		margin-bottom:7px;
+		border-bottom:1px solid #ccc;
+	}
+	#article-content p
+	{
+		line-height:24px
+	}
+</style>
+{% endblock %}
+
+{% block js %}
+
+<script>
+</script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+{% endblock %}
+
+{% block content %}
+	<div class="well hidden-xs hidden-sm" style="border-radius: 0px;padding-left:36px;padding-top:0px;padding-bottom:0px">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<p style="padding-top:5px;padding-bottom:5px;margin:0px"><a href="/index">返回首页</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+	<div class="container" id="testpincontainer">
+		<div class="row">
+			<div class="col-md-8 contentsection">
+				<div style="padding-top:50px;"> <!-- title list section -->
+					<div style="padding-top:10px"> <!-- one title and summary -->
+						<h3>没有更多的文章了</h3>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 hidden-xs hidden-sm">
+				<div style="margin-top:60px;margin-left:30px;">
+					<div id="quicklinks">
+						{{ quicklinkstemplate.render_quicklinks(recommended) }}
+						{{ quicklinkstemplate.render_quicklinks(lastest) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<br>
+{% endblock %}

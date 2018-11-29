@@ -1,0 +1,44 @@
+{% extends "admin_headfoot.html" %}
+{% block title %}
+首页内容控制
+{% endblock %}
+{% block navigation %}
+{{ render_navigation("index") }}
+{% endblock %}
+{% block content %}
+	<div class="ui vertical segment">
+		<a class="ui tiny button" href="/admin/index/jumbotron">
+			<i class="browser icon"></i>巨幕
+		</a>
+		<a class="ui tiny button" href="/admin/index/slick">
+			<i class="server icon"></i>滚动图片
+		</a>
+		<a class="ui tiny button" href="/admin/index/aboutus">
+			<i class="copyright icon"></i>关于我们
+		</a>
+        <a class="ui tiny button" href="/admin/index/footer">
+			<i class="copyright icon"></i>合作单位
+		</a>
+	</div>
+	
+	<div class="ui vertical segment">
+		<form class="ui form" method="POST" action="/admin/index/update/jumbotron" >
+			<div class="ui small labeled input">
+				<div class="ui label">Title：</div>
+				<input name="title" placeholder="标题。。" type="text">
+			</div>
+			<div class="ui divider"></div>
+			<textarea placeholder="巨幕正文。。。" name="content"></textarea>
+			<div class="ui divider"></div>
+			<div class="ui small labeled input">
+				<div class="ui label">Address：</div>
+				<input name="link" placeholder="链接地址。。" type="text">
+			</div>
+			<div class="ui divider"></div>
+			<div class="ui small labeled input">
+				<div class="ui label">Image：</div>
+				<input name="image_link" placeholder="图片地址。。" type="text">
+			</div>
+		</form>
+	</div>
+{% endblock %}

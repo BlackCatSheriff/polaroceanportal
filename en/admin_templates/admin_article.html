@@ -1,0 +1,188 @@
+{% extends "admin_headfoot.html" %}
+{% block title %}
+文章管理
+{% endblock %}
+{% block navigation %}
+{{ render_navigation("article") }}
+{% endblock %}
+
+{% macro render_pagenavigation(board,current_page_id,current_catagory_id) %}
+{% if board.pagecount!=None %}
+
+{% if board.pagecount+1<16 %}
+	{% set the_last_page_navipill=board.pagecount+1 %}
+{% else %}
+	{% set the_last_page_navipill=16 %}
+{% endif %}
+
+{% if board.pagecount-15<1 %}
+	{% set the_first_page_navipill=1 %}
+{% else %}
+	{% set the_first_page_navipill=board.pagecount-14 %}
+{% endif %}
+<div class="ui pagination menu">
+	<a class="icon item" href="/admin/article/board/{{board.id}}?page_id=1&catagory_id={{current_catagory_id}}">
+		<i class="left arrow icon"></i>
+	</a>
+		
+		{% if current_page_id<8 %}
+			{% for one_page_id in range(1,the_last_page_navipill) %}
+				{% if current_page_id==one_page_id %}
+					<a class="active teal item">{{ one_page_id }}</a>
+				{% else %}
+					<a class="item" href="/admin/article/board/{{ board.id }}?catagory_id={{ current_catagory_id }}&page_id={{ one_page_id }}">{{ one_page_id }}</a>
+				{% endif %}
+			{% endfor %}
+		{% elif board.pagecount-current_page_id<8 %}
+			{% for one_page_id in range(the_first_page_navipill,board.pagecount+1) %}
+				{% if current_page_id==one_page_id %}
+					<a class="active teal item">{{ one_page_id }}</a>
+				{% else %}
+					<a class="item" href="/admin/article/board/{{ board.id }}?catagory_id={{ current_catagory_id }}&page_id={{ one_page_id }}">{{ one_page_id }}</a>
+				{% endif %}
+			{% endfor %}
+		{% else %}
+			{% for one_page_id in range(current_page_id-7,current_page_id+8) %}
+				{% if current_page_id==one_page_id %}
+					<a class="active teal item">{{ one_page_id }}</a>
+				{% else %}
+					<a class="item" href="/admin/article/board/{{ board.id }}?catagory_id={{ current_catagory_id }}&page_id={{ one_page_id }}">{{ one_page_id }}</a>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+
+	<a class="icon item" href="/admin/article/board/{{ board.id }}?catagory_id={{ current_catagory_id }}&page_id={{ board.pagecount }}">
+		<i class="right arrow icon"></i>
+	</a>
+</div>
+{% endif %}
+{% endmacro %}
+
+{% block content %}
+	<div class="ui vertical segment">
+		{% for id,name in {1:"资讯",2:"新闻",3:"评论",4:"政治",5:"法律",6:"开发",7:"航运",8:"旅游",9:"渔业",10:"团队",11:"学者",13:"人类",14:"科技",15:"环境"}.iteritems() %}
+			{% if id==board.id %}
+				<a class="ui tiny primary button" href="/admin/article/board/{{ id }}">
+					<i class="table icon"></i>{{ name }}
+				</a>
+			{% else %}
+				<a class="ui tiny button" href="/admin/article/board/{{ id }}">
+					<i class="table icon"></i>{{ name }}
+				</a>
+			{% endif %}
+			
+		{% endfor %}
+	</div>
+	
+	<div class="ui vertical segment">
+		{% if board.catagorys!=None %}
+			{% for catagory_id,catagory in board.catagorys.iteritems() %}
+				<div class="ui tiny buttons">
+					<a href="/admin/article/board/{{ board.id }}?catagory_id={{catagory.id}}" class="ui button">{{ catagory.name }}
+					</a>
+					<a class="ui button" href="/admin/article/board/{{ board.id }}/delete/{{ catagory.id }}"><i class="trash outline icon"></i>
+					</a>
+				</div>
+			{% endfor %}
+		{% endif %}
+	</div>
+	
+	<div class="ui vertical segment">
+	
+		<form class="ui form" action="/admin/article/board/{{ board.id }}/create" method="POST">
+	
+	
+			<table class="ui blue striped celled table">
+				<thead>
+					<tr>
+						<th class="four wide center aligned">标题</th>
+						<th class="one wide center aligned">发布时间</th>
+						<th class="two wide center aligned">版块</th>
+						<th class="six wide center aligned">分类</th>
+						<th class="three wide center aligned">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if board.articles!=None %}
+						{% for article_id,article in board.articles.iteritems() %}
+							{% if loop.index<11 %}
+							<tr>
+								<td><a href="/article/{{article.id}}">{{ article.title }}</a></td>
+								<td>{{ article.time }}</td>
+								<td class="center aligned">{{ article.forum.name }}</td>
+								<td>
+									{% if board.catagorys!=None %}
+										{% if article.catagory!=None %}
+											{% for catagory_id,catagory in board.catagorys.iteritems() %}
+												{% if article.catagory.id==catagory_id %}
+												<a href="/admin/article/board/{{ board.id }}/article/{{ article.id }}/removecatagory" class="ui blue label">{{ catagory.name }}</a>
+												{% else %}
+												<a href="/admin/article/board/{{ board.id }}/article/{{ article.id }}/changecatagory/{{catagory.id}}" class="ui label">{{ catagory.name }}</a>
+												{% endif %}
+											{% endfor %}
+										{% else %}
+											{% for catagory_id,catagory in board.catagorys.iteritems() %}
+												<a href="/admin/article/board/{{ board.id }}/article/{{ article.id }}/changecatagory/{{catagory.id}}" class="ui label">{{ catagory.name }}</a>
+											{% endfor %}
+										{% endif %}
+									{% endif %}
+								</td>
+								<td class="center aligned">
+									<div class="ui tiny buttons">
+										<a class="ui icon button" title="修改" href="/admin/article/update/{{article.id}}"><i class="edit icon"></i></a>
+										<a class="ui icon button" title="删除" href="/admin/article/delete/{{ article.id }}"><i class="remove icon"></i></a>
+										{% if article.title_bold %}
+										<a class="ui primary icon button" title="取消标题加粗" href="/admin/article/unbold/{{ article.id }}"><i class="bold icon"></i></a>
+										{% else %}
+										<a class="ui icon button" title="标题加粗" href="/admin/article/bold/{{ article.id }}"><i class="bold icon"></i></a>
+										{% endif %}
+										
+										{% if article.sticked %}
+										<a class="ui primary icon button" title="取消置顶" href="/admin/article/unstick/{{ article.id }}"><i class="attach icon"></i></a>
+										{% else %}
+										<a class="ui icon button" title="文章置顶" href="/admin/article/stick/{{ article.id }}"><i class="attach icon"></i></a>
+										{% endif %}
+										
+										{% if article.recommended %}
+										<a class="ui primary icon button" title="取消推荐" href="/admin/article/unrecommend/{{ article.id }}"><i class="minus square outline icon"></i></a>
+										{% else %}
+										<a class="ui icon button" title="推荐" href="/admin/article/recommend/{{ article.id }}"><i class="checkmark box icon"></i></a>
+										{% endif %}
+									</div>
+								</td>
+							</tr>
+							{% endif %}
+						{% endfor %}
+					{% else %}
+							<tr>
+								<td class="center aligned" colspan="5">当前没有文章</td>
+							</tr>
+					{% endif %}
+			
+				</tbody>
+				<tfoot>
+					<tr>
+						<th colspan="5">
+						{{ render_pagenavigation(board,current_page_id,current_catagory_id) }}
+						</th>
+					</tr>
+				</tfoot>
+			</table>
+	
+			<div class="ui divider"></div>
+	
+			<a class="ui tiny button" href="/admin/article/create">
+				添加文章
+			</a>
+			
+			<div class="ui divider"></div>
+			
+			<div class="ui action input">
+				<input name="catagory_name" placeholder="类目名" type="text">
+				<input type="submit" value="创建" class="ui button">
+			</div>
+	
+		</form>
+	</div>
+
+{% endblock %}

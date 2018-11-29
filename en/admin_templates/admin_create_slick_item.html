@@ -1,0 +1,102 @@
+{% extends "admin_headfoot.html" %}
+{% block title %}
+首页内容控制
+{% endblock %}
+{% block navigation %}
+{{render_navigation("index")}}
+{% endblock %}
+{% block content %}
+	<div class="ui vertical segment">
+		<a class="ui tiny button" href="/admin/index/jumbotron">
+			<i class="browser icon"></i>巨幕
+		</a>
+		<a class="ui primary tiny button" href="/admin/index/slick">
+			<i class="server icon"></i>滚动图片
+		</a>
+		<a class="ui tiny button" href="/admin/index/aboutus">
+			<i class="copyright icon"></i>关于我们
+		</a>
+		        <a class="ui tiny button" href="/admin/index/footer">
+			<i class="copyright icon"></i>合作单位
+		</a>
+	</div>
+	
+	<div class="ui vertical segment">
+		{% if item.slick.name=="professors" %}
+		<a class="ui tiny button" href="/admin/index/slick/scholars">
+			<i class="server icon"></i>研究团队
+		</a>
+		<a class="ui primary tiny button" href="/admin/index/slick/professors">
+			<i class="server icon"></i>顾问学者
+		</a>
+		{% else %}
+		<a class="ui primary tiny button" href="/admin/index/slick/scholars">
+			<i class="server icon"></i>研究团队
+		</a>
+		<a class="ui tiny button" href="/admin/index/slick/professors">
+			<i class="server icon"></i>顾问学者
+		</a>
+		{% endif %}
+	</div>
+	
+	<div class="ui vertical segment">
+        <form class="ui form" id="form_img" method="post" action="/admin/article/upload/?action=uploadimage" enctype="multipart/form-data" target="target_img">
+            <div class="ui small labeled input">
+                <div class="ui label">Choose image：</div>
+                <input id="img_file" name="upfile" type="file" />
+                <input name="submit" class="ui button" value="上传" type="submit">
+            </div>
+        </form>
+        <div class="ui divider"></div>
+        <iframe id="target_img" name="target_img" hidden="hidden"></iframe>
+		<form class="ui form" method="POST" action="/admin/index/slick/{{ item.slick.name }}/create" >
+			<div class="ui small labeled input">
+				<div class="ui label">Title：</div>
+				{% if item.name.data!=None %}
+				<input name="name" value="{{ item.name.data }}" placeholder="标题。。" type="text">
+				{% else %}
+				<input name="name" placeholder="标题。。" type="text">
+				{% endif %}
+			</div>
+			<div class="ui divider"></div>
+			<div class="ui small labeled input">
+				<div class="ui label">Link：</div>
+				{% if item.link.data!=None %}
+				<input name="link" value="{{ item.link.data }}" placeholder="链接地址。。" type="text">
+				{% else %}
+				<input name="link" placeholder="链接地址。。" type="text">
+				{% endif %}
+			</div>
+			<div class="ui divider"></div>
+			<div class="ui small labeled input">
+				<div class="ui label">Image：</div>
+				{% if item.image_link.data!=None %}
+				<input name="image_link" id="img_url" readonly="readonly" value="{{ item.image_link.data }}" placeholder="图片地址。。" type="text">
+				{% else %}
+				<input name="image_link" id="img_url" readonly="readonly" placeholder="图片地址。。" type="text">
+				{% endif %}
+			</div>
+			<div class="ui divider"></div>
+			<input type="submit" value="保存" class="ui tiny button">
+		</form>
+	</div>
+<script>
+    $(function ($) {
+        var result;
+        $("#target_img").load(function () {
+            result = $(this);
+            console.log(result[0].contentDocument.body.textContent);
+            var ans = JSON.parse(result[0].contentDocument.body.textContent);
+            if (ans["state"] == "SUCCESS") {
+            alert("上传成功");
+            $("#img_url").val("/upload/"+ans["url"]);
+
+            }
+            else {
+                alert("上传失败请重试！");
+            }
+        });
+
+    });
+</script>
+{% endblock %}

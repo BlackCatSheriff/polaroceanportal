@@ -1,0 +1,131 @@
+{% extends "headfoot.html" %}
+{% import "quicklinkslist.html" as quicklinks %}
+
+
+{% block title %}
+-{{board.name}}
+{% endblock %}
+
+{% block css %}
+<style>
+	.page-header
+	{
+		padding-bottom:0px;
+		margin-bottom:7px;
+		border-bottom:1px solid #ccc;
+	}
+.el-txt p{
+display:inline-block!important;}
+</style>
+{% endblock %}
+
+{% block js %}
+<script>
+$(document).ready(function(){
+
+
+function replace(str, substr, newstr) {
+  var p = -1; // 字符出现位置
+  var s = 0; // 下一次起始位置
+
+  while((p = str.indexOf(substr, s)) > -1) {
+    s = p + newstr.length; // 位置 + 值的长度
+    str = str.replace(substr, newstr);
+  }
+
+  return str;
+}
+
+$(".el-txt").find("p").each(function(){
+	var p = $(this).text();
+	p = p.replace(/\/?.+?>/g,"");
+	p = replace(p,"span","");
+	p = replace(p,"em","");
+	p = replace(p ,"<","");
+	p = replace(p ,">","");
+	p = replace(p,"/","");
+	p = replace(p,"sp","");
+	$(this).text(p);
+})
+
+})
+</script>
+{% endblock %}
+
+{% block content %}
+{{ quicklinks.render_breadcrumb(board) }}
+<div class="container">
+
+		<div class="row">
+			<div class="col-md-8 contentsection">
+				<div style="padding-top:50px;"> <!-- title list section -->
+				{% if board.articles != None %}
+					{% for article_id,article in board.articles.iteritems() %}
+						{% if loop.index<11 %}
+							<div style="border-bottom:1px dotted #aaa;padding-top:10px">
+								<h3>
+									<a target="_blank" href="/article/{{ article.id }}">
+									{% if article.title_bold %}
+										<b>{{ article.title }}</b>
+									{% else %}
+										{{ article.title }}
+									{% endif %}
+									</a>
+								</h3>
+								{% if article.abstract !=None and article.abstract|trim!="" %}
+								<p style="color:#666">{{ article.abstract }}<a target="_blank" href="/article/{{ article.id }}" style="color:#ba3636">[详细]</a></p>
+								{% else %}
+								<div  class="el-txt" style="color:#666"><p>{{ article.get_abstract() }}</p><a target="_blank" href="/article/{{ article.id }}" style="color:#ba3636">[详细]</a></div>
+								{% endif %}
+								<p style="color:#999;"><small>{{ article.time }}
+								{% if article.catagory!=None %}
+								 | <a href="/board/{{ board.id }}?catagory_id={{ article.catagory.id }}" style="color:#555">{{ article.catagory.name }}</a>
+								{% endif %}
+								</small></p>
+							</div>
+						{% endif %}
+					{% endfor %}
+				{% else %}
+					<div style="padding-top:10px"> <!-- one title and summary -->
+						<h3>该分类该板块下没有文章</h3>
+					</div>
+				{% endif %}
+				</div><!-- title list end -->
+				<br>
+				{{ quicklinks.render_pagenavigation(board,current_page_id,current_catagory_id) }}
+			</div>
+			<div class="col-md-4 hidden-xs hidden-sm">
+				<div class="quicklinkssection" style="margin-top:80px;margin-left:30px;">
+					{% if board.catagorys!=None %}
+					<div style="padding-top:5px;padding-bottom:20px;">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">文章分类</h3>
+							</div>
+							<div class="list-group">
+							{% for catagory_id,catagory in board.catagorys.iteritems() %}
+								{% if catagory_id==current_catagory_id %}
+								<a href="/board/{{ board.id }}?catagory_id={{ catagory.id }}" class="active list-group-item">{{ catagory.name }}</a>
+								{% else %}
+								<a href="/board/{{ board.id }}?catagory_id={{ catagory.id }}" class="list-group-item">{{ catagory.name }}</a>
+								{% endif %}
+								
+							{% endfor %}
+							</div>
+						</div>
+					
+					</div>
+					{% endif %}
+					<div id="quicklinks">
+					
+						{{ quicklinks.render_quicklinks(recommended) }}
+						{{ quicklinks.render_quicklinks(lastest) }}
+							
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
+{% endblock %}

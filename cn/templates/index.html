@@ -1,0 +1,454 @@
+{% extends "headfoot.html" %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+<style>
+	.page-header
+	{
+		padding-bottom:0px;
+		margin-bottom:7px;
+		background-image:url('images/index2pxborderbottom.png');
+		background-repeat:no-repeat;
+		border:0px;
+		padding-bottom:2px;
+	}
+	
+	
+	
+	
+	
+	
+	a.catagorylink
+	{
+		color:#2b2b2b;
+	}
+	a.catagorylink:hover
+	{
+		color:#ba2636;
+		text-decoration:none;
+	}
+	a.catagorylinkmore 
+	{
+		font-size:12px;
+	}
+	.board_name{
+		font-size:16px;
+		margin-bottom:0px;
+		font-weight:bold;
+	}
+	.article_title{
+		padding:3px 0px 3px 15px;
+		background-image:url('/images/libackground.png');
+		background-repeat:no-repeat;
+		background-position:left 7px;
+	}
+	
+	.polarnews_board_name{
+		padding-left:15px;
+		margin-bottom:0px;
+	}
+	.polarnews_article_title{
+		font-size:16px;
+		padding:3px 0px 3px 15px;
+		background-image:url('images/libackground.png');
+		background-repeat:no-repeat;
+		background-position:left 7px;
+	}
+	
+	.infocomment_board_name{
+		margin-bottom:0px;
+	}
+	.infocomment_article_section{
+		
+	}
+	.infocomment_article_title{
+		padding-top:5px;
+		font-size:13px;
+	}
+	.infocomment_article_abstract{
+		font-size:12px;
+		color:#838383;
+	}
+	
+	.professors,.scholars
+	{
+		cursor:move;
+	}
+	a.rightarrow
+	{
+		background-image:url('images/pointright1.png');
+		cursor:pointer;
+		position:absolute;
+		top:-150px;
+	}
+	a.leftarrow
+	{
+		background-image:url('images/pointleft1.png');
+		cursor:pointer;
+		position:absolute;
+		top:-150px;
+	}
+	a.rightarrow:hover
+	{
+		background-image:url('images/pointright2.png');
+		color:green;
+	}
+	a.leftarrow:hover
+	{
+		background-image:url('images/pointleft2.png');
+		color:green;
+	}
+</style>
+{% endblock %}
+
+{% macro render_articlelist(board) %}
+	<div class="page-header">
+		<div class="row">
+			<div class="col-xs-6">
+				<p class="board_name"><a class="catagorylink" href="/board/{{ board.id }}">{{ board.name }}</a></p>
+			</div>
+			<div class="col-xs-6">
+				<div class="text-right"><a class="catagorylinkmore" href="/board/{{ board.id }}">MORE</a></div>
+			</div>
+		</div>
+	</div>
+	<ul class="list-unstyled">
+		{% if board.articles!=None %}
+		{% for article_id,article in board.articles.iteritems() %}
+			{% if loop.index<7 %}
+				<li class="article_title">
+					<a target="_blank" href="/article/{{ article.id }}">
+						{% if article.title_bold %}
+						<b>{{ article.title }}</b>
+						{% else %}
+						{{ article.title }}
+						{% endif %}
+					</a>
+				</li>
+			{% endif %}
+		{% endfor %}
+		{% endif %}
+	</ul>
+{% endmacro %}
+
+{% macro render_polarnews(board) %}
+<div class="row" style="padding-top:10px">
+	<div class="col-xs-6">
+		<p class="polarnews_board_name"><a class="catagorylink" href="/board/{{ board.id }}">{{ board.name }}</a></p>
+	</div>
+	<div class="col-xs-6">
+		<div class="text-right"><a class="catagorylinkmore" href="/board/{{ board.id }}">MORE</a></div>
+	</div>
+</div>
+<ul class="list-unstyled" style="padding-top:10px">
+	{% if board.articles!=None %}
+	{% for article_id,article in board.articles.iteritems() %}
+		{% if loop.index<11 %}
+			<li class="polarnews_article_title">
+				<a target="_blank" href="/article/{{ article.id }}">
+					{% if article.title_bold %}
+						<b>{{ article.title }}</b>
+					{% else %}
+						{{ article.title }}
+					{% endif %}
+				</a>
+			</li>
+		{% endif %}
+	{% endfor %}
+	{% endif %}
+</ul>
+{% endmacro %}
+
+{% macro render_infoorcomment(board) %}
+<div class="row" style="padding-top:10px">
+	<div class="col-xs-6">
+		<p class="infocomment_board_name"><a class="catagorylink" href="/board/{{ board.id }}">{{ board.name }}</a></p>
+	</div>
+	<div class="col-xs-6">
+		<div class="text-right"><a class="catagorylinkmore" href="/board/{{ board.id }}">MORE</a></div>
+	</div>
+</div>
+{% if board.articles!=None %}
+	{% if board.articles|length>1 %}
+		{% set article_id,article=board.articles.popitem(False) %}
+		<div class="infocomment_article_section" style="border-bottom:1px dotted #dddddd;">
+			<h5 class="infocomment_article_title">
+				<a target="_blank" href="/article/{{ article.id }}">
+					{% if article.title_bold %}
+						<b>{{ article.title }}</b>
+					{% else %}
+						{{ article.title }}
+					{% endif %}
+				</a>
+			</h5>
+			<p class="infocomment_article_abstract">
+			{{ article.abstract }}
+			</p>
+		</div>
+		{% set article_id,article=board.articles.popitem(False) %}
+		<div class="infocomment_article_section">
+			<h5 class="infocomment_article_title">
+				<a target="_blank" href="/article/{{ article.id }}">
+					{% if article.title_bold %}
+						<b>{{ article.title }}</b>
+					{% else %}
+						{{ article.title }}
+					{% endif %}
+				</a>
+			</h5>
+			<p class="infocomment_article_abstract">
+			{{ article.abstract }}
+			</p>
+		</div>
+	{% else %}
+		{% set article_id,article=board.articles.popitem(False) %}
+		<div class="infocomment_article_section">
+			<h5 class="infocomment_article_title">
+				<a target="_blank" href="/article/{{ article.id }}">
+					{% if article.title_bold %}
+						<b>{{ article.title }}</b>
+					{% else %}
+						{{ article.title }}
+					{% endif %}
+				</a>
+			</h5>
+			<p class="infocomment_article_abstract">
+			{{ article.abstract }}
+			</p>
+		</div>
+	{% endif %}
+{% endif %}
+
+{% endmacro %}
+
+
+
+
+{% block js %}
+<script type="text/javascript" src="slick/slick.min.js"></script>
+<script>
+	
+$(document).ready(function(){
+	
+	winwidth=$(window).innerWidth();
+	if (winwidth>=979)
+	{
+		var slidesToShow=5;
+		var autoplay=true;
+	}
+	else
+	{
+		var slidesToShow=3;
+		var autoplay=true;
+	}
+	$('.scholars').slick({
+		infinite: true,
+		slidesToShow: slidesToShow,
+		slidesToScroll: 1,
+		arrows: true,
+		prevArrow:$(".leftarrow").first(),
+		nextArrow:$(".rightarrow").first(),
+		autoplay:autoplay,
+		autoplaySpeed:2000,
+		speed:400,
+		lazyLoad:'ondemand',
+		swipeToSlide:true,
+		mobileFirst:true,
+		centerMode: true,
+		focusOnSelect: true
+	});
+	$('.professors').slick({
+		infinite: true,
+		slidesToShow: slidesToShow,
+		slidesToScroll: 1,
+		arrows: true,
+		prevArrow:$(".leftarrow").last(),
+		nextArrow:$(".rightarrow").last(),
+		autoplay:autoplay,
+		autoplaySpeed:2000,
+		speed:400,
+		lazyLoad:'ondemand',
+		swipeToSlide:true,
+		mobileFirst:true,
+		centerMode: true,
+		focusOnSelect: true
+	});
+
+	
+	$(window).resize(function(){
+		winwidth=$(window).innerWidth();
+		if (winwidth>=979)
+		{
+			var slidesToShow=5;
+		}
+		else
+		{
+			var slidesToShow=3;
+		}
+		$('.professors,.scholars').slick("slickSetOption","slidesToShow",slidesToShow,true);
+	});
+
+});
+</script>
+{% endblock %}
+
+{% block content %}
+	<!-- jumbotron division -->
+	<div class="jumbotron" style="background-image:url('{{ jumbotron.image_link }}');background-size:cover;background-repeat:no-repeat">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-7">
+					<div class="hidden-xs hidden-sm" style="height:50px">
+					</div>
+					<div style="padding:5px 20px;background:none repeat scroll 0 0 rgba(0, 0, 0, 0.5);opacity:0.8;color:white;filter:alpha(opacity=50)">
+						<h2>{{ jumbotron.title }}</h2>
+						<p style="font-size:16px">{{ jumbotron.content }}
+						</p>
+						<p><a class="btn btn-primary btn-lg" target="_blank" href="{{ jumbotron.link }}" role="button">阅读全文</a></p>
+					</div>
+					<div class="hidden-xs hidden-sm" style="height:50px">
+					</div>
+				</div>
+				<div class="col-md-4">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- jumbotron end -->
+	<br>
+
+<!--<div class="container-fluid">  <!--the big scroll img -->
+<!--	<div class="row"> -->
+		
+<!--</div>-->
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3 visible-md visible-lg">
+				<div class="panel panel-default">
+					<div class="panel-body" style="padding-top:0px;padding-bottom:0px">
+						{% set polar_events=render_infoorcomment(all_board[1]) %}
+						{{ polar_events }}
+					</div>
+				</div>
+				<!--<div style="border:1px solid #dedede;padding:0 15px">
+					
+				</div>-->
+			</div>
+			<div class="col-md-5">
+				{{ render_polarnews(all_board[2]) }}
+			</div>
+			<div class="col-md-3 visible-sm visible-xs">
+				{{ polar_events }}
+			</div>
+			<div class="col-md-4">
+				{{ render_infoorcomment(all_board[3]) }}
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				{{ render_articlelist(all_board[4]) }}
+			</div>
+			<div class="col-md-4">
+				{{ render_articlelist(all_board[5]) }}
+			</div>
+			<div class="col-md-4">
+				{{ render_articlelist(all_board[6]) }}
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				{{ render_articlelist(all_board[7]) }}
+			</div>
+			<div class="col-md-4">
+				{{ render_articlelist(all_board[8]) }}
+			</div>
+			<div class="col-md-4">
+				{{ render_articlelist(all_board[9]) }}
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				{{ render_articlelist(all_board[13]) }}
+			</div>
+			<div class="col-md-4">
+				{{ render_articlelist(all_board[14]) }}
+			</div>
+			<div class="col-md-4">
+				{{ render_articlelist(all_board[15]) }}
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="page-header"><p style="font-size:16px;margin-bottom:0px;font-weight:bold"><a class="catagorylink" href="/board/10">研究团队</a></p></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div>
+					<div class="scholars">
+					{% if scholars.items != None %}
+						{% for item_id,item in scholars.items.iteritems() %}
+						<div style="padding-right:20px;padding-left:20px;text-align:center">
+							<img src="{{ item.image_link }}" class="img-responsive">
+							<a target="_blank" href="{{ item.link }}">{{ item.name }}</a>
+						</div>
+						{% endfor %}
+					{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row visible-md visible-lg">
+			<div class="col-md-1">
+				<a class="leftarrow" style="display:block;width:58px;height:85px;"></a>
+			</div>
+			<div class="col-md-10">
+			</div>
+			<div class="col-md-1">
+				<a class="rightarrow" style="display:block;width:58px;height:85px;"></a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="page-header" style="margin-top:0px;"><p style="font-size:16px;margin-bottom:0px;font-weight:bold;"><a class="catagorylink" href="/board/11">顾问团队</a></p></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div>
+					<div class="professors">
+					{% if professors.items != None %}
+						{% for item_id,item in professors.items.iteritems() %}
+						<div style="padding-right:20px;padding-left:20px;text-align:center">
+							<img src="{{ item.image_link }}" class="img-responsive">
+							<a target="_blank" href="{{ item.link }}">{{ item.name }}</a>
+						</div>
+						{% endfor %}
+					{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row visible-md visible-lg">
+			<div class="col-md-1">
+				<a class="leftarrow" style="display:block;width:58px;height:85px;"></a>
+			</div>
+			<div class="col-md-10">
+			</div>
+			<div class="col-md-1">
+				<a class="rightarrow" style="display:block;width:58px;height:85px;"></a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

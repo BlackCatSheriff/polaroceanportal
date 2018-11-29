@@ -1,0 +1,53 @@
+{% extends "admin_headfoot.html" %}
+{% block title %}
+帮助
+{% endblock %}
+{% block navigation %}
+{{ render_navigation("help") }}
+{% endblock %}
+{% block content %}
+	<div class="ui vertical segment">
+		<h1>FAQ</h1>
+	</div>
+	<div class="ui vertical segment">
+		<div class="ui ordered list">
+			<div class="item">
+				备份策略？ <br>答：每月1,8,15,22日备份，当月备份数据保存在/root/backup/week目录中。每月28日转移当月备份数据至/root/backup/month目录。每年12月31日转移当年所有月份的备份数据至/root/backup/year目录中。
+			</div>
+			<div class="item">
+				今天是2015-07-26日，能不能恢复到2015-05-26日数据？ <br>答：不能，备份策略限定了备份点只能在于每月1,8,15,22日，以2015-05月为例，只能恢复至该月1日，8日，15日或22日的数据。
+			</div>
+			<div class="item">
+				今天是2015-07-26日，我要恢复至2015-05-22日的数据，该怎么办？ <br>答：因为是当年的恢复，所以先change directory到/root/backup/month目录中。2015-05-22日的数据位于2015-05.tar.gz打包文件中。解压该文件，将其中的2015-05-22文件，覆盖复制到网站根目录下database文件。
+			</div>
+			<div class="item">
+				今天是2015-07-26日，周六，我要恢复至上周的数据，该怎么办？ <br>答：因为是当月的恢复，所以先change directory到/root/backup/week目录中。上周的备份点是2015-07-15日，将/root/backup/week/2015-07-15文件覆盖复制网站根目录下database文件。
+			</div>
+			<div class="item">
+				用户名密码输了为什么没法登录，显示错误？ <br>答：本系统用户名密码都是大小写敏感的，请注意输入的大小写大小写是否正确。
+			</div>
+			<div class="item">
+				能不能用手机登录管理后台？ <br>答：后台请用最新版Firefox浏览器 或 Chrome浏览器登录，其他浏览器可能存在兼容性问题。
+			</div>
+			<div class="item">
+				怎么查看网站访问量？ <br>答：本站访问量统计只统计前端页面的访问量，请登录<a href="http://tongji.baidu.com">百度统计</a>查看，用户名密码请向网站管理员索取。
+			</div>
+			<div class="item">
+				首页设置方面Image，Address 怎么设置？ <br>答：Image 通过点击 choose image 中选择文件的按钮，选择好需要上传的图片，点击确定按钮即可。Address需要输入资源的地址，地址为包含协议的完整URL(Http://XXX.XXX.XXX)，地址具体请参考<a href="http://en.wikipedia.org/wiki/URL">WIKIPEDIA</a>。
+			</div>
+			<div class="item">
+				能不能手动设置文章的发布时间？ <br>答：不可以。
+			</div>
+			<div class="item">
+				文章摘要是怎么提取的？ <br>答：文章摘要提取策略是手动输入和计算机自动提取相结合的，如果用户手动输入了摘要则显示用户输入的摘要，如果用户没有输入摘要则显示计算机提取的摘要，但是在网站首页显示的摘要必须是用户手动输入的摘要。因此，智库动态和要闻评论板块的文章摘要必须要由用户手动输入。
+			</div>
+		</ol>
+	</div>
+	
+	<div class="ui vertical segment">
+		<h1>CONTACT</h1>
+	</div>
+	<div class="ui vertical segment">
+		<p>版权所有：中国海洋大学郭培清教授及其研究生团队<br>E-mail:peiqingguo@163.com</p>
+	</div>
+{% endblock %}

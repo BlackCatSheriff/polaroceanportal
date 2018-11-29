@@ -1,0 +1,75 @@
+{% extends "admin_headfoot.html" %}
+{% block title %}
+文件管理
+{% endblock %}
+
+{% block navigation %}
+{{ render_navigation("file") }}
+{% endblock %}
+
+	
+{% block content %}
+	<div class="ui vertical segment">
+		<a class="ui tiny button" href="/admin/file/image">
+			<i class="disk outline icon"></i>图片
+		</a>
+		<a class="ui tiny button" href="/admin/file/file">
+			<i class="disk outline icon"></i>其他文件
+		</a>
+	</div>
+	
+	<div class="ui vertical segment">
+		<div class="ui breadcrumb">
+			<a class="section" href="/admin/file/{{ directory.bucket.name }}"><i class="disk outline icon"></i>{{ directory.bucket.chinese_name }}</a>
+			<i class="right chevron icon divider"></i>
+			<div class="active section"><i class="folder open outline icon"></i>{{ directory.name }}</div>
+		</div>
+	</div>
+	
+	<div class="ui vertical segment">
+	
+		<form class="ui form" method="POST" enctype="multipart/form-data" action="/admin/file/{{ directory.bucket.name }}/{{ directory.name }}/upload">
+	
+	
+			<table class="ui blue striped celled table">
+				<thead>
+					<tr>
+						<th class="eight wide">文件名</th>
+						<th class="four wide">最后修改时间</th>
+						<th class="three wide">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for file_name,file in directory.files.iteritems() %}
+					<tr>
+						<td><a target="_blank" href="http://{{ file.directory.bucket.raw_name }}.oss-cn-qingdao.aliyuncs.com/{{ file.raw_name }}"><i class="file icon"></i>{{ file.name }}</td>
+						<td>{{ file.last_modified_time }}</td>
+						<td>
+							<div class="ui tiny buttons">
+								<a href="/admin/file/{{ directory.bucket.name }}/{{ directory.name }}/delete/{{ file.name|urlencode }}" class="ui button">删除</a>
+							</div>
+						</td>
+					</tr>
+					{% else %}
+					<tr>
+						<td class="center aligned" colspan="3">当前没有文件</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+	
+	
+			<div class="ui divider"></div>
+	
+			<div class="ui button">
+				<input id="fileupload" type="file" name="file">
+			</div>
+	
+	
+			<div class="ui divider"></div>
+	
+			<input type="submit" value="上传" class="ui tiny button">
+	
+		</form>
+	</div>
+{% endblock %}
